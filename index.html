@@ -3,169 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmoniie - Espace Sécurisé</title>
+    <title>Harmoniie - Espace Client Sécurisé</title>
     <style>
         :root {
-            --primary: #002e5d;
-            --accent: #b39359;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-            --danger: #e74c3c;
+            --bank-blue: #002e5d;
+            --bank-gold: #b39359;
+            --bank-red: #d9534f;
+            --bank-bg: #f4f7f6;
         }
 
-        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); }
+        body, html { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background: var(--bank-bg); }
 
-        /* --- LOGIN --- */
+        /* --- LOGIN SCREEN --- */
         #login-screen {
             display: flex; justify-content: center; align-items: center; height: 100vh;
-            background: linear-gradient(135deg, var(--primary) 0%, #001a35 100%);
+            background: linear-gradient(135deg, var(--bank-blue) 0%, #00152b 100%);
         }
-        .login-box { background: var(--white); padding: 40px; border-radius: 12px; width: 100%; max-width: 380px; text-align: center; }
-        .form-group { text-align: left; margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        .btn-auth { width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .login-card { background: white; padding: 40px; border-radius: 10px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .form-input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-login { width: 100%; padding: 15px; background: var(--bank-gold); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
         /* --- DASHBOARD --- */
-        #main-dashboard { display: none; }
-        header { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
+        #dashboard { display: none; }
+        header { background: var(--bank-blue); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
         
-        .nav-menu { background: var(--white); padding: 10px 5%; border-bottom: 1px solid #ddd; display: flex; gap: 20px; }
-        .nav-item { cursor: pointer; padding: 10px 15px; font-weight: 600; color: var(--primary); border-radius: 4px; }
-        .nav-item:hover { background: #eee; }
-        .nav-item.active { background: var(--primary); color: white; }
+        .main-nav { background: white; padding: 0 5%; border-bottom: 1px solid #ddd; display: flex; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .nav-btn { padding: 20px; cursor: pointer; font-weight: bold; color: var(--bank-blue); border-bottom: 3px solid transparent; }
+        .nav-btn:hover { background: #f9f9f9; }
+        .nav-btn.active { border-bottom: 3px solid var(--bank-gold); color: var(--bank-gold); }
 
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-        .balance-card { background: white; padding: 25px; border-radius: 10px; border-left: 6px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .balance-amount { font-size: 2.5rem; font-weight: bold; color: var(--primary); }
-
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
         /* --- TRANSFER PAGE --- */
-        #transfer-page { display: none; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .error-banner { background: #fdeaea; color: var(--danger); padding: 15px; border-radius: 5px; border: 1px solid var(--danger); margin-bottom: 20px; display: none; font-weight: bold; }
+        #error-message { 
+            display: none; 
+            background: #f8d7da; 
+            color: #721c24; 
+            padding: 20px; 
+            border-radius: 5px; 
+            border: 1px solid #f5c6cb; 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            text-align: center;
+        }
 
-        /* --- TABLES --- */
-        .transaction-list { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f8f9fa; padding: 15px; text-align: left; font-size: 12px; color: #888; }
+        .transfer-form label { display: block; margin-top: 15px; font-weight: bold; color: #555; }
+        .transfer-form input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+
+        /* --- TABLE --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 12px; background: #f8f9fa; color: #666; font-size: 13px; }
         td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
-        .pos { color: #27ae60; font-weight: bold; }
-        .neg { color: var(--danger); font-weight: bold; }
+        .amount-pos { color: #28a745; font-weight: bold; }
+        .amount-neg { color: #dc3545; font-weight: bold; }
     </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login-screen">
-    <div class="login-box">
-        <h1 style="color:var(--primary); margin-bottom:5px;">HARMONIIE</h1>
-        <p style="color:#888; font-size:12px; margin-bottom:25px;">Espace Client Particulier</p>
-        <div class="form-group">
-            <label>NUMÉRO DE COMPTE</label>
-            <input type="text" id="acc_id" placeholder="129942">
-        </div>
-        <div class="form-group">
-            <label>MOT DE PASSE</label>
-            <input type="password" id="acc_pass" placeholder="••••••••">
-        </div>
-        <button class="btn-auth" onclick="validateLogin()">SE CONNECTER</button>
+    <div class="login-card">
+        <h1 style="color:var(--bank-blue); margin-bottom:20px;">HARMONIIE</h1>
+        <input type="text" id="acc_number" class="form-input" placeholder="Numéro de compte (129942)">
+        <input type="password" id="acc_pass" class="form-input" placeholder="Mot de passe">
+        <button class="btn-login" onclick="login()">CONNEXION</button>
     </div>
 </div>
 
-<div id="main-dashboard">
+<!-- MAIN DASHBOARD -->
+<div id="dashboard">
     <header>
-        <div style="font-weight:bold; font-size:20px;">HARMONIIE</div>
-        <div style="font-size:13px;">Mme MONIQUE SIRONVAL <button onclick="location.reload()" style="background:none; border:1px solid white; color:white; margin-left:10px; cursor:pointer;">Déconnexion</button></div>
+        <div style="font-size: 24px; font-weight: bold;">HARMONIIE</div>
+        <div>Mme MONIQUE SIRONVAL | <a href="#" onclick="location.reload()" style="color:white; text-decoration:none; font-size:12px; border:1px solid white; padding:5px; border-radius:3px;">Déconnexion</a></div>
     </header>
 
-    <div class="nav-menu">
-        <div class="nav-item active" onclick="showTab('summary')">Synthèse</div>
-        <div class="nav-item" onclick="showTab('transfer')">Virement</div>
-        <div class="nav-item">Mes RIB</div>
-        <div class="nav-item">Messages</div>
+    <div class="main-nav">
+        <div class="nav-btn active" id="btn-home" onclick="showPage('home')">Synthèse</div>
+        <div class="nav-btn" id="btn-virement" onclick="showPage('virement')">Virement</div>
+        <div class="nav-btn">RIB / Documents</div>
+        <div class="nav-btn">Assurances</div>
     </div>
 
     <div class="container">
-        <!-- SYNTHESE -->
-        <div id="summary-content">
-            <div class="balance-card">
-                <div style="font-size:12px; color:#888;">SOLDE DISPONIBLE</div>
-                <div class="balance-amount">319 765,48 €</div>
-                <div style="font-size:14px; color:var(--accent);">Compte Courant - 129942</div>
+        <!-- HOME PAGE -->
+        <div id="page-home">
+            <div class="card" style="border-left: 5px solid var(--bank-gold); margin-bottom: 20px;">
+                <div style="font-size: 14px; color: #888;">SOLDE TOTAL DISPONIBLE</div>
+                <div style="font-size: 40px; font-weight: bold; color: var(--bank-blue);">319 765,48 €</div>
+                <div style="margin-top: 10px; font-weight: bold; color: var(--bank-gold);">Compte Courant Particulier n° 129942</div>
             </div>
 
-            <div class="transaction-list">
+            <div class="card">
+                <h3>Dernières Opérations</h3>
                 <table>
-                    <thead><tr><th>DATE</th><th>LIBELLÉ</th><th>MONTANT</th></tr></thead>
+                    <thead>
+                        <tr><th>DATE</th><th>DESCRIPTION</th><th>MONTANT</th></tr>
+                    </thead>
                     <tbody>
-                        <tr><td>05/06/2026</td><td>Virement BIL bank LU97...</td><td class="pos">+14 334,00 €</td></tr>
-                        <tr><td>05/05/2026</td><td>Virement BNP bank FR76...</td><td class="pos">+11 127,00 €</td></tr>
-                        <tr style="background:#fff5f5;"><td>16/04/2026</td><td><strong>Blocage Fiscal Compte</strong></td><td class="neg">-69 342,00 €</td></tr>
-                        <tr><td>07/04/2026</td><td>Demande d'assurance</td><td class="neg">-25 000,00 €</td></tr>
+                        <tr><td>05/06/2026</td><td>Virement BIL bank LU97...</td><td class="amount-pos">+14 334,00 €</td></tr>
+                        <tr><td>05/05/2026</td><td>Virement BNP bank FR76...</td><td class="amount-pos">+11 127,00 €</td></tr>
+                        <tr style="background:#fff5f5;"><td>16/04/2026</td><td><strong>Demande fiscale et blocage</strong></td><td class="amount-neg">-69 342,00 €</td></tr>
+                        <tr><td>07/04/2026</td><td>Demande d'assurance</td><td class="amount-neg">-25 000,00 €</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- PAGE VIREMENT -->
-        <div id="transfer-page">
-            <h2 style="color:var(--primary);">Nouveau Virement</h2>
-            <div id="transfer-error" class="error-banner">Not sufficient maintenance margin to process the operation</div>
-            
-            <div class="form-group">
-                <label>COMPTE À DÉBITER</label>
-                <select style="width:100%; padding:12px; border-radius:5px; border:1px solid #ddd;">
-                    <option>Compte Courant (*942) - 319 765,48 €</option>
-                </select>
+        <!-- VIREMENT PAGE -->
+        <div id="page-virement" style="display:none;">
+            <div id="error-message">Not sufficient maintenance margin to process the operation</div>
+            <div class="card">
+                <h2 style="color:var(--bank-blue); margin-top:0;">Effectuer un virement</h2>
+                <div class="transfer-form">
+                    <label>Compte à débiter</label>
+                    <input type="text" value="Compte Courant (*942) - 319 765,48 €" disabled style="background:#f0f0f0;">
+                    
+                    <label>Nom du bénéficiaire</label>
+                    <input type="text" id="dest-name" placeholder="Ex: Jean Dupont">
+                    
+                    <label>IBAN du destinataire</label>
+                    <input type="text" id="dest-iban" placeholder="FR76 0000 0000 ...">
+                    
+                    <label>Montant (€)</label>
+                    <input type="number" id="dest-amount" placeholder="0.00">
+                    
+                    <button class="btn-login" style="background:var(--bank-blue); margin-top:30px;" onclick="executeTransfer()">VALIDER LE VIREMENT</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>NOM DU BÉNÉFICIAIRE</label>
-                <input type="text" placeholder="Nom complet">
-            </div>
-            <div class="form-group">
-                <label>IBAN DU DESTINATAIRE</label>
-                <input type="text" placeholder="FR76 ...">
-            </div>
-            <div class="form-group">
-                <label>MONTANT (EUR)</label>
-                <input type="number" placeholder="0.00">
-            </div>
-            <button class="btn-auth" onclick="submitTransfer()" style="margin-top:20px;">VALIDER LE VIREMENT</button>
         </div>
     </div>
 </div>
 
 <script>
-    function validateLogin() {
-        const user = document.getElementById('acc_id').value;
+    function login() {
+        const user = document.getElementById('acc_number').value;
         const pass = document.getElementById('acc_pass').value;
         if(user === "129942" && pass === "sironvalmonique@yahoo.fr") {
             document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-dashboard').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'block';
         } else {
-            alert("Identifiants incorrects");
+            alert("Accès refusé. Vérifiez vos identifiants.");
         }
     }
 
-    function showTab(tab) {
-        const summary = document.getElementById('summary-content');
-        const transfer = document.getElementById('transfer-page');
-        const items = document.querySelectorAll('.nav-item');
+    function showPage(page) {
+        document.getElementById('page-home').style.display = (page === 'home') ? 'block' : 'none';
+        document.getElementById('page-virement').style.display = (page === 'virement') ? 'block' : 'none';
         
-        items.forEach(i => i.classList.remove('active'));
+        document.getElementById('btn-home').classList.toggle('active', page === 'home');
+        document.getElementById('btn-virement').classList.toggle('active', page === 'virement');
         
-        if(tab === 'summary') {
-            summary.style.display = 'block';
-            transfer.style.display = 'none';
-            items[0].classList.add('active');
-        } else {
-            summary.style.display = 'none';
-            transfer.style.display = 'block';
-            items[1].classList.add('active');
-        }
+        document.getElementById('error-message').style.display = 'none';
     }
 
-    function submitTransfer() {
-        document.getElementById('transfer-error').style.display = 'block';
-        window.scrollTo(0,0);
+    function executeTransfer() {
+        const err = document.getElementById('error-message');
+        err.style.display = 'block';
+        window.scrollTo(0, 0);
     }
 </script>
 
