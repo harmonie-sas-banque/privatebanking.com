@@ -3,163 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmoniie - Espace Client Sécurisé</title>
+    <title>Harmoniie - Banque Privée & Particuliers</title>
     <style>
         :root {
-            --bank-blue: #002e5d;
-            --bank-gold: #b39359;
-            --bank-red: #d9534f;
-            --bank-bg: #f4f7f6;
+            --primary: #002e5d;
+            --accent: #b39359;
+            --danger: #d9534f;
+            --bg: #f0f2f5;
+            --white: #ffffff;
         }
 
-        body, html { margin: 0; padding: 0; font-family: 'Arial', sans-serif; background: var(--bank-bg); }
+        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #333; }
 
-        /* --- LOGIN SCREEN --- */
-        #login-screen {
-            display: flex; justify-content: center; align-items: center; height: 100vh;
-            background: linear-gradient(135deg, var(--bank-blue) 0%, #00152b 100%);
-        }
-        .login-card { background: white; padding: 40px; border-radius: 10px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .form-input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .btn-login { width: 100%; padding: 15px; background: var(--bank-gold); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        /* --- NAVIGATION PRINCIPALE --- */
+        nav { background: var(--white); padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--primary); font-weight: 600; font-size: 14px; }
+        .btn-client { background: var(--primary); color: white !important; padding: 10px 20px; border-radius: 4px; }
 
-        /* --- DASHBOARD --- */
-        #dashboard { display: none; }
-        header { background: var(--bank-blue); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-        
-        .main-nav { background: white; padding: 0 5%; border-bottom: 1px solid #ddd; display: flex; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .nav-btn { padding: 20px; cursor: pointer; font-weight: bold; color: var(--bank-blue); border-bottom: 3px solid transparent; }
-        .nav-btn:hover { background: #f9f9f9; }
-        .nav-btn.active { border-bottom: 3px solid var(--bank-gold); color: var(--bank-gold); }
+        /* --- SECTION CONNEXION --- */
+        #login-section { display: none; height: 90vh; justify-content: center; align-items: center; background: url('https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&q=80&w=1000') center/cover; }
+        .login-card { background: var(--white); padding: 40px; border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 400px; }
+        .login-card h2 { color: var(--primary); text-align: center; margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 8px; color: #666; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn-submit { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 16px; }
 
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        
-        /* --- TRANSFER PAGE --- */
-        #error-message { 
-            display: none; 
-            background: #f8d7da; 
-            color: #721c24; 
-            padding: 20px; 
-            border-radius: 5px; 
-            border: 1px solid #f5c6cb; 
-            margin-bottom: 20px; 
-            font-weight: bold; 
-            text-align: center;
-        }
+        /* --- ESPACE CLIENT (DASHBOARD) --- */
+        #dashboard-section { display: none; }
+        .sidebar { width: 260px; background: var(--primary); height: 100vh; position: fixed; color: white; padding: 30px 0; }
+        .sidebar-item { padding: 15px 30px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; font-size: 15px; }
+        .sidebar-item:hover { background: rgba(255,255,255,0.1); }
+        .sidebar-item.active { background: var(--accent); }
+        .main-content { margin-left: 260px; padding: 40px; }
 
-        .transfer-form label { display: block; margin-top: 15px; font-weight: bold; color: #555; }
-        .transfer-form input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        /* --- PAGES INTERNES --- */
+        .page { display: none; }
+        .page.active { display: block; }
+        .balance-box { background: var(--white); padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 6px solid var(--accent); margin-bottom: 30px; }
+        .balance-box h3 { margin: 0; color: #888; font-size: 14px; text-transform: uppercase; }
+        .balance-val { font-size: 36px; font-weight: bold; color: var(--primary); margin: 10px 0; }
 
-        /* --- TABLE --- */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; padding: 12px; background: #f8f9fa; color: #666; font-size: 13px; }
+        /* --- FORMULAIRE DE VIREMENT --- */
+        .transfer-container { background: var(--white); padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 600px; }
+        .transfer-header { border-bottom: 2px solid #f0f0f0; margin-bottom: 25px; padding-bottom: 10px; }
+        .error-msg { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; border: 1px solid #f5c6cb; margin-bottom: 20px; display: none; font-weight: bold; }
+
+        /* --- TABLEAU TRANSACTIONS --- */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        th { background: #f8f9fa; padding: 15px; text-align: left; font-size: 12px; color: #777; }
         td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
-        .amount-pos { color: #28a745; font-weight: bold; }
-        .amount-neg { color: #dc3545; font-weight: bold; }
+        .amt-pos { color: #27ae60; font-weight: bold; }
+        .amt-neg { color: var(--danger); font-weight: bold; }
+
+        /* --- HOME PAGE --- */
+        #home-hero { height: 80vh; background: linear-gradient(rgba(0,46,93,0.8), rgba(0,46,93,0.8)), url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1000'); background-size: cover; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
+        #home-hero h1 { font-size: 48px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
+<!-- NAVIGATION -->
+<nav id="main-nav">
+    <div class="logo">HARMONIIE</div>
+    <div class="nav-links">
+        <a href="#" onclick="showSection('home')">Accueil</a>
+        <a href="#">Comptes</a>
+        <a href="#">Prêts</a>
+        <a href="#" class="btn-client" onclick="showSection('login')">Espace Client</a>
+    </div>
+</nav>
+
+<!-- PAGE D'ACCUEIL -->
+<section id="home-section">
+    <div id="home-hero">
+        <div>
+            <h1>L'excellence bancaire au quotidien</h1>
+            <p>Gérez vos actifs avec une sécurité de pointe et un accompagnement sur mesure.</p>
+            <br>
+            <button class="btn-submit" style="width:250px;" onclick="showSection('login')">Accéder à mes comptes</button>
+        </div>
+    </div>
+</section>
+
+<!-- CONNEXION -->
+<section id="login-section">
     <div class="login-card">
-        <h1 style="color:var(--bank-blue); margin-bottom:20px;">HARMONIIE</h1>
-        <input type="text" id="acc_number" class="form-input" placeholder="Numéro de compte (129942)">
-        <input type="password" id="acc_pass" class="form-input" placeholder="Mot de passe">
-        <button class="btn-login" onclick="login()">CONNEXION</button>
+        <h2>Connexion</h2>
+        <div id="login-err" style="color:red; font-size:12px; margin-bottom:10px; display:none;">Identifiants incorrects.</div>
+        <div class="form-group">
+            <label>IDENTIFIANT (N° DE COMPTE)</label>
+            <input type="text" id="user" placeholder="129942">
+        </div>
+        <div class="form-group">
+            <label>CODE SECRET (EMAIL)</label>
+            <input type="password" id="pass" placeholder="••••••••">
+        </div>
+        <button class="btn-submit" onclick="attemptLogin()">SE CONNECTER</button>
     </div>
-</div>
+</section>
 
-<!-- MAIN DASHBOARD -->
-<div id="dashboard">
-    <header>
-        <div style="font-size: 24px; font-weight: bold;">HARMONIIE</div>
-        <div>Mme MONIQUE SIRONVAL | <a href="#" onclick="location.reload()" style="color:white; text-decoration:none; font-size:12px; border:1px solid white; padding:5px; border-radius:3px;">Déconnexion</a></div>
-    </header>
-
-    <div class="main-nav">
-        <div class="nav-btn active" id="btn-home" onclick="showPage('home')">Synthèse</div>
-        <div class="nav-btn" id="btn-virement" onclick="showPage('virement')">Virement</div>
-        <div class="nav-btn">RIB / Documents</div>
-        <div class="nav-btn">Assurances</div>
+<!-- ESPACE CLIENT -->
+<section id="dashboard-section">
+    <div class="sidebar">
+        <div style="padding: 0 30px 30px 30px; font-size: 20px; font-weight: bold;">HARMONIIE</div>
+        <div class="sidebar-item active" id="menu-home" onclick="showTab('home')">Tableau de bord</div>
+        <div class="sidebar-item" id="menu-virement" onclick="showTab('virement')">Virement</div>
+        <div class="sidebar-item">Mes RIB</div>
+        <div class="sidebar-item">Cartes</div>
+        <div class="sidebar-item" onclick="location.reload()" style="margin-top: 50px; color: #aaa;">Déconnexion</div>
     </div>
 
-    <div class="container">
-        <!-- HOME PAGE -->
-        <div id="page-home">
-            <div class="card" style="border-left: 5px solid var(--bank-gold); margin-bottom: 20px;">
-                <div style="font-size: 14px; color: #888;">SOLDE TOTAL DISPONIBLE</div>
-                <div style="font-size: 40px; font-weight: bold; color: var(--bank-blue);">319 765,48 €</div>
-                <div style="margin-top: 10px; font-weight: bold; color: var(--bank-gold);">Compte Courant Particulier n° 129942</div>
+    <div class="main-content">
+        <!-- TAB: SYNTHESE -->
+        <div id="tab-home" class="page active">
+            <div style="margin-bottom: 25px;">
+                <h1 style="margin:0;">Bonjour, Mme SIRONVAL</h1>
+                <p style="color:#666;">Dernière connexion : Aujourd'hui à 14:22</p>
             </div>
 
-            <div class="card">
-                <h3>Dernières Opérations</h3>
+            <div class="balance-box">
+                <h3>Solde disponible</h3>
+                <div class="balance-val">319 765,48 €</div>
+                <div style="font-weight: bold; color: var(--accent);">Compte Courant Particulier - 129942</div>
+            </div>
+
+            <div style="background:white; border-radius:8px; padding:20px; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+                <h4 style="margin-top:0;">Dernières opérations</h4>
                 <table>
                     <thead>
-                        <tr><th>DATE</th><th>DESCRIPTION</th><th>MONTANT</th></tr>
+                        <tr><th>DATE</th><th>LIBELLÉ</th><th>MONTANT</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>05/06/2026</td><td>Virement BIL bank LU97...</td><td class="amount-pos">+14 334,00 €</td></tr>
-                        <tr><td>05/05/2026</td><td>Virement BNP bank FR76...</td><td class="amount-pos">+11 127,00 €</td></tr>
-                        <tr style="background:#fff5f5;"><td>16/04/2026</td><td><strong>Demande fiscale et blocage</strong></td><td class="amount-neg">-69 342,00 €</td></tr>
-                        <tr><td>07/04/2026</td><td>Demande d'assurance</td><td class="amount-neg">-25 000,00 €</td></tr>
+                        <tr><td>05/06/2026</td><td>Virement BIL bank LU97...</td><td class="amt-pos">+14 334,00 €</td></tr>
+                        <tr><td>05/05/2026</td><td>Virement BNP bank FR76...</td><td class="amt-pos">+11 127,00 €</td></tr>
+                        <tr style="background:#fff5f5;"><td>16/04/2026</td><td><strong>Blocage Fiscal Compte</strong></td><td class="amt-neg">-69 342,00 €</td></tr>
+                        <tr><td>07/04/2026</td><td>Demande d'assurance</td><td class="amt-neg">-25 000,00 €</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- VIREMENT PAGE -->
-        <div id="page-virement" style="display:none;">
-            <div id="error-message">Not sufficient maintenance margin to process the operation</div>
-            <div class="card">
-                <h2 style="color:var(--bank-blue); margin-top:0;">Effectuer un virement</h2>
-                <div class="transfer-form">
-                    <label>Compte à débiter</label>
-                    <input type="text" value="Compte Courant (*942) - 319 765,48 €" disabled style="background:#f0f0f0;">
-                    
-                    <label>Nom du bénéficiaire</label>
-                    <input type="text" id="dest-name" placeholder="Ex: Jean Dupont">
-                    
-                    <label>IBAN du destinataire</label>
-                    <input type="text" id="dest-iban" placeholder="FR76 0000 0000 ...">
-                    
-                    <label>Montant (€)</label>
-                    <input type="number" id="dest-amount" placeholder="0.00">
-                    
-                    <button class="btn-login" style="background:var(--bank-blue); margin-top:30px;" onclick="executeTransfer()">VALIDER LE VIREMENT</button>
+        <!-- TAB: VIREMENT -->
+        <div id="tab-virement" class="page">
+            <div class="transfer-container">
+                <div class="transfer-header">
+                    <h2 style="margin:0; color:var(--primary);">Effectuer un virement</h2>
+                    <p style="color:#666; font-size:14px;">Virement SEPA immédiat ou standard</p>
                 </div>
+
+                <div id="error-box" class="error-msg">Not sufficient maintenance margin to process the operation</div>
+
+                <div class="form-group">
+                    <label>COMPTE À DÉBITER</label>
+                    <select style="width:100%; padding:12px; border:1px solid #ddd; border-radius:4px; background:#f9f9f9;">
+                        <option>Compte Courant (*942) - 319 765,48 €</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>NOM DU BÉNÉFICIAIRE</label>
+                    <input type="text" id="bene-name" placeholder="Ex: Jean Dupont">
+                </div>
+
+                <div class="form-group">
+                    <label>IBAN DU DESTINATAIRE</label>
+                    <input type="text" id="bene-iban" placeholder="FR76 0000 0000 0000 0000 0000 000">
+                </div>
+
+                <div class="form-group">
+                    <label>MONTANT À TRANSFÉRER (€)</label>
+                    <input type="number" id="bene-amount" placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label>MOTIF (OPTIONNEL)</label>
+                    <input type="text" placeholder="Ex: Loyer Juin">
+                </div>
+
+                <button class="btn-submit" style="background:var(--primary);" onclick="triggerError()">VALIDER LE TRANSFERT</button>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <script>
-    function login() {
-        const user = document.getElementById('acc_number').value;
-        const pass = document.getElementById('acc_pass').value;
-        if(user === "129942" && pass === "sironvalmonique@yahoo.fr") {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-        } else {
-            alert("Accès refusé. Vérifiez vos identifiants.");
+    function showSection(id) {
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'none';
+        
+        if(id === 'home') document.getElementById('home-section').style.display = 'block';
+        if(id === 'login') document.getElementById('login-section').style.display = 'flex';
+        if(id === 'dash') {
+            document.getElementById('dashboard-section').style.display = 'block';
+            document.getElementById('main-nav').style.display = 'none';
         }
     }
 
-    function showPage(page) {
-        document.getElementById('page-home').style.display = (page === 'home') ? 'block' : 'none';
-        document.getElementById('page-virement').style.display = (page === 'virement') ? 'block' : 'none';
-        
-        document.getElementById('btn-home').classList.toggle('active', page === 'home');
-        document.getElementById('btn-virement').classList.toggle('active', page === 'virement');
-        
-        document.getElementById('error-message').style.display = 'none';
+    function attemptLogin() {
+        const u = document.getElementById('user').value;
+        const p = document.getElementById('pass').value;
+        if(u === "129942" && p === "sironvalmonique@yahoo.fr") {
+            showSection('dash');
+        } else {
+            document.getElementById('login-err').style.display = 'block';
+        }
     }
 
-    function executeTransfer() {
-        const err = document.getElementById('error-message');
-        err.style.display = 'block';
+    function showTab(tab) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+        
+        if(tab === 'home') {
+            document.getElementById('tab-home').classList.add('active');
+            document.getElementById('menu-home').classList.add('active');
+        } else {
+            document.getElementById('tab-virement').classList.add('active');
+            document.getElementById('menu-virement').classList.add('active');
+        }
+        document.getElementById('error-box').style.display = 'none';
+    }
+
+    function triggerError() {
+        document.getElementById('error-box').style.display = 'block';
         window.scrollTo(0, 0);
     }
 </script>
