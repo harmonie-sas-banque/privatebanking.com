@@ -3,132 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmoniie | Excellence Bancaire et Solutions de Financement</title>
+    <title>Harmoniie - Connexion Client</title>
     <style>
         :root {
-            --bank-blue: #002e5d;
-            --bank-gold: #b39359;
-            --bank-light: #f4f7f6;
-            --bank-white: #ffffff;
+            --primary-blue: #002e5d;
+            --accent-gold: #b39359;
+            --light-gray: #f4f7f6;
+            --white: #ffffff;
         }
 
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bank-light);
-            scroll-behavior: smooth;
+            height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--light-gray);
         }
 
-        /* --- HOME PAGE & NAVIGATION --- */
-        #home-page {
-            display: block;
-        }
-
-        header {
-            background: var(--bank-white);
-            padding: 15px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--bank-blue);
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--bank-blue);
-            margin: 0 15px;
-            font-weight: 600;
-        }
-
-        .btn-portal {
-            background: var(--bank-blue);
-            color: white !important;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        .hero {
-            height: 60vh;
-            background: linear-gradient(rgba(0,46,93,0.7), rgba(0,46,93,0.7)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1373&q=80');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-        }
-
-        .hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; }
-
-        /* --- LOGIN SECTION --- */
-        .login-section {
-            padding: 60px 0;
+        /* --- PAGE DE CONNEXION (AFFICHÉE PAR DÉFAUT) --- */
+        #login-screen {
             display: flex;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #001a35 100%);
         }
 
-        .login-container {
-            background: white;
+        .login-box {
+            background: var(--white);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             width: 100%;
-            max-width: 450px;
-        }
-
-        .login-container h2 {
-            color: var(--bank-blue);
+            max-width: 400px;
             text-align: center;
-            margin-bottom: 30px;
         }
 
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; }
+        .login-box h1 {
+            color: var(--primary-blue);
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .login-box p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             box-sizing: border-box;
+            font-size: 15px;
+            transition: border 0.3s;
         }
 
-        .btn-submit {
+        .form-group input:focus {
+            border-color: var(--accent-gold);
+            outline: none;
+        }
+
+        .btn-auth {
             width: 100%;
             padding: 15px;
-            background: var(--bank-gold);
+            background-color: var(--accent-gold);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background 0.3s;
+            margin-top: 10px;
         }
 
-        .btn-submit:hover { background: #967a49; }
+        .btn-auth:hover {
+            background-color: #967a49;
+        }
 
-        /* --- DASHBOARD VIEW --- */
-        #dashboard-view {
+        #error-msg {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 15px;
             display: none;
-            min-height: 100vh;
+            background: #fdf2f2;
+            padding: 10px;
+            border-radius: 4px;
         }
 
-        .dash-nav {
-            background: var(--bank-blue);
+        /* --- TABLEAU DE BORD (CACHÉ PAR DÉFAUT) --- */
+        #main-dashboard {
+            display: none;
+        }
+
+        header {
+            background: var(--primary-blue);
             color: white;
             padding: 15px 5%;
             display: flex;
@@ -136,128 +123,153 @@
             align-items: center;
         }
 
-        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
 
         .balance-card {
             background: white;
             padding: 30px;
-            border-radius: 8px;
-            border-top: 6px solid var(--bank-gold);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--accent-gold);
+            margin-bottom: 25px;
         }
 
-        .balance-val { font-size: 2.8rem; font-weight: bold; color: var(--bank-blue); margin: 10px 0; }
-
-        .trans-table {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin: 10px 0;
         }
 
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f8f9fa; padding: 15px; text-align: left; color: #777; font-size: 12px; }
-        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
-
-        .amt-p { color: #2ecc71; font-weight: bold; }
-        .amt-n { color: #e74c3c; font-weight: bold; }
-        .details { display: block; font-size: 11px; color: #999; }
-
-        .alert-box {
+        .alert-banner {
             background: #fff3cd;
-            border: 1px solid #ffeeba;
             color: #856404;
             padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid #ffeeba;
+            margin-bottom: 25px;
             font-weight: bold;
+        }
+
+        .transaction-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8f9fa;
+            text-align: left;
+            padding: 15px;
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .pos { color: #27ae60; font-weight: bold; }
+        .neg { color: #c0392b; font-weight: bold; }
+        .sub-text { display: block; font-size: 11px; color: #aaa; margin-top: 4px; }
+
+        .btn-logout {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<!-- PAGE D'ACCUEIL HARMONIIE -->
-<div id="home-page">
+<!-- ÉCRAN DE CONNEXION -->
+<div id="login-screen">
+    <div class="login-box">
+        <h1>HARMONIIE</h1>
+        <p>Espace client sécurisé</p>
+        
+        <div id="error-msg">Identifiants incorrects. Veuillez réessayer.</div>
+        
+        <div class="form-group">
+            <label>N° DE COMPTE</label>
+            <input type="text" id="acc_id" placeholder="Ex: 129942">
+        </div>
+        
+        <div class="form-group">
+            <label>MOT DE PASSE</label>
+            <input type="password" id="acc_pass" placeholder="Votre mot de passe">
+        </div>
+        
+        <button class="btn-auth" onclick="validateLogin()">SE CONNECTER</button>
+        
+        <div style="margin-top: 25px; font-size: 11px; color: #999;">
+            Connexion sécurisée SSL 256-bit<br>
+            &copy; 2026 Harmoniie Bank SAS
+        </div>
+    </div>
+</div>
+
+<!-- ÉCRAN DU TABLEAU DE BORD -->
+<div id="main-dashboard">
     <header>
-        <div class="logo">Harmoniie</div>
-        <div class="nav-links">
-            <a href="#">Particuliers</a>
-            <a href="#">Professionnels</a>
-            <a href="#">Épargne</a>
-            <a href="#login-anchor" class="btn-portal">Espace Client</a>
+        <div style="font-size: 22px; font-weight: bold; letter-spacing: 1px;">HARMONIIE</div>
+        <div>
+            <span style="margin-right: 15px;">Mme MONIQUE SIRONVAL</span>
+            <button class="btn-logout" onclick="logout()">DÉCONNEXION</button>
         </div>
     </header>
 
-    <section class="hero">
-        <div>
-            <h1>L'avenir de votre patrimoine</h1>
-            <p>Une banque à vos côtés, partout, tout le temps.</p>
-        </div>
-    </section>
-
-    <section class="login-section" id="login-anchor">
-        <div class="login-container">
-            <h2>Connexion Sécurisée</h2>
-            <div id="error" style="color:red; text-align:center; display:none; margin-bottom:10px;">Identifiants invalides</div>
-            <div class="form-group">
-                <label>Numéro de compte</label>
-                <input type="text" id="user_id" placeholder="Ex: 123456">
-            </div>
-            <div class="form-group">
-                <label>Code secret (Email)</label>
-                <input type="password" id="user_pass" placeholder="••••••••">
-            </div>
-            <button class="btn-submit" onclick="handleLogin()">ACCÉDER À MES COMPTES</button>
-        </div>
-    </section>
-</div>
-
-<!-- TABLEAU DE BORD CLIENT -->
-<div id="dashboard-view">
-    <nav class="dash-nav">
-        <div class="logo" style="color:white">Harmoniie</div>
-        <div>
-            <span>Mme MONIQUE SIRONVAL</span>
-            <button onclick="handleLogout()" style="margin-left:20px; cursor:pointer; background:none; border:1px solid white; color:white; padding:5px 10px;">Déconnexion</button>
-        </div>
-    </nav>
-
     <div class="container">
-        <div class="alert-box">
-            ATTENTION : Compte restreint - Demande fiscale et blocage du compte en cours (16/04/2026).
+        <div class="alert-banner">
+            ALERTE : Votre compte est actuellement restreint suite à une demande fiscale de 69 342 EUR (16/04/2026).
         </div>
 
         <div class="balance-card">
-            <span style="color:#888; letter-spacing:1px;">SOLDE ACTUEL</span>
-            <div class="balance-val">319 765,48 €</div>
-            <div style="color:var(--bank-gold); font-weight:bold;">Compte de Dépôt n° 129942</div>
+            <div style="font-size: 14px; color: #888;">SOLDE TOTAL DISPONIBLE</div>
+            <div class="balance-amount">319 765,48 €</div>
+            <div style="color: var(--accent-gold); font-weight: bold;">Compte Courant Particulier n° 129942</div>
         </div>
 
-        <div class="trans-table">
+        <div class="transaction-list">
             <table>
                 <thead>
                     <tr>
                         <th>DATE</th>
-                        <th>LIBELLÉ DES OPÉRATIONS</th>
+                        <th>DÉTAILS DES TRANSACTIONS</th>
                         <th>MONTANT</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>05/06/2026</td><td>Virement BIL bank<span class="details">LU97 0024 1153 8560 0000</span></td><td class="amt-p">+14 334,00 €</td></tr>
-                    <tr><td>05/05/2026</td><td>Virement BNP bank<span class="details">FR76 1747 8000 0100 0360 0294 227</span></td><td class="amt-p">+11 127,00 €</td></tr>
-                    <tr><td>30/04/2026</td><td>Virement BNP bank<span class="details">FR76 1747 8000 0100 0360 0294 227</span></td><td class="amt-p">+6 148,00 €</td></tr>
-                    <tr><td>24/04/2026</td><td>Virement BNP bank<span class="details">LU73 4080 0000 2885 7187</span></td><td class="amt-p">+12 102,00 €</td></tr>
-                    <tr><td>20/04/2026</td><td>Virement BNP bank<span class="details">LU73 4080 0000 2885 7187</span></td><td class="amt-p">+15 146,00 €</td></tr>
-                    <tr><td>18/04/2026</td><td>Virement BNP bank<span class="details">LU73 4080 0000 2885 7187</span></td><td class="amt-p">+10 485,00 €</td></tr>
-                    <tr style="background:#fffafa;"><td>16/04/2026</td><td><strong>Demande fiscale et blocage</strong></td><td class="amt-n">-69 342,00 €</td></tr>
-                    <tr><td>14/04/2026</td><td>Virement BNP bank<span class="details">FR76 1747 8000 0100 0383 9960 081</span></td><td class="amt-p">+7 097,00 €</td></tr>
-                    <tr><td>13/04/2026</td><td>Virement BNP bank<span class="details">LU73 4080 0000 2885 7187</span></td><td class="amt-p">+8 729,00 €</td></tr>
-                    <tr><td>09/04/2026</td><td>Virement BNP bank<span class="details">FR76 1747 8000 0100 0383 9960 081</span></td><td class="amt-p">+9 174,00 €</td></tr>
-                    <tr><td>07/04/2026</td><td>Demande d'assurance</td><td class="amt-n">-25 000,00 €</td></tr>
-                    <tr><td>03/04/2026</td><td>Virement BNP bank<span class="details">BE47 0020 2179 8480</span></td><td class="amt-p">+8 516,00 €</td></tr>
-                    <tr><td>03/04/2026</td><td>Virement BNP bank<span class="details">LU73 4080 0000 2885 7187</span></td><td class="amt-p">+8 880,00 €</td></tr>
-                    <tr><td>24/03/2026</td><td>Frais conversion crypto</td><td class="amt-n">-17 396,00 €</td></tr>
+                    <tr><td>05/06/2026</td><td>Virement BIL bank<span class="sub-text">LU97 0024 1153 8560 0000 - LU734080000028857187</span></td><td class="pos">+14 334,00 €</td></tr>
+                    <tr><td>05/05/2026</td><td>Virement BNP bank<span class="sub-text">FR7617478000010003600294227</span></td><td class="pos">+11 127,00 €</td></tr>
+                    <tr><td>30/04/2026</td><td>Virement BNP bank<span class="sub-text">FR7617478000010003600294227</span></td><td class="pos">+6 148,00 €</td></tr>
+                    <tr><td>24/04/2026</td><td>Virement BNP bank<span class="sub-text">LU734080000028857187</span></td><td class="pos">+12 102,00 €</td></tr>
+                    <tr><td>20/04/2026</td><td>Virement BNP bank<span class="sub-text">LU734080000028857187</span></td><td class="pos">+15 146,00 €</td></tr>
+                    <tr><td>18/04/2026</td><td>Virement BNP bank<span class="sub-text">LU734080000028857187</span></td><td class="pos">+10 485,00 €</td></tr>
+                    <tr style="background-color:#fff5f5;"><td>16/04/2026</td><td><strong>Demande fiscale et blocage du compte</strong></td><td class="neg">-69 342,00 €</td></tr>
+                    <tr><td>14/04/2026</td><td>Virement BNP bank<span class="sub-text">FR761747800 0010 0038 3996 0081</span></td><td class="pos">+7 097,00 €</td></tr>
+                    <tr><td>13/04/2026</td><td>Virement BNP bank<span class="sub-text">LU734080000028857187</span></td><td class="pos">+8 729,00 €</td></tr>
+                    <tr><td>09/04/2026</td><td>Virement BNP bank<span class="sub-text">FR761747800 0010 0038 3996 0081</span></td><td class="pos">+9 174,00 €</td></tr>
+                    <tr><td>07/04/2026</td><td>Demande d'assurance</td><td class="neg">-25 000,00 €</td></tr>
+                    <tr><td>03/04/2026</td><td>Virement BNP bank<span class="sub-text">BE47 0020 2179 8480 - FR761747800 0010 0038 3996 0081</span></td><td class="pos">+8 516,00 €</td></tr>
+                    <tr><td>03/04/2026</td><td>Virement BNP bank<span class="sub-text">BE47 0020 2179 8480 - LU734080000028857187</span></td><td class="pos">+8 880,00 €</td></tr>
+                    <tr><td>24/03/2026</td><td>Frais conversion crypto en euros</td><td class="neg">-17 396,00 €</td></tr>
                 </tbody>
             </table>
         </div>
@@ -265,21 +277,21 @@
 </div>
 
 <script>
-    function handleLogin() {
-        const id = document.getElementById('user_id').value;
-        const pass = document.getElementById('user_pass').value;
-        
-        // Identifiants requis
-        if(id === "129942" && pass === "sironvalmonique@yahoo.fr") {
-            document.getElementById('home-page').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'block';
-            window.scrollTo(0, 0);
+    function validateLogin() {
+        const user = document.getElementById('acc_id').value;
+        const pass = document.getElementById('acc_pass').value;
+        const error = document.getElementById('error-msg');
+
+        // Validation des identifiants requis
+        if(user === "129942" && pass === "sironvalmonique@yahoo.fr") {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-dashboard').style.display = 'block';
         } else {
-            document.getElementById('error').style.display = 'block';
+            error.style.display = 'block';
         }
     }
 
-    function handleLogout() {
+    function logout() {
         window.location.reload();
     }
 </script>
