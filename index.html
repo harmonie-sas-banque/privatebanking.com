@@ -1,145 +1,269 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmoniebanque SAS - Online Banking</title>
+    <title>Harmoniie - Espace Client Sécurisé</title>
     <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #c5a059;
+            --bg-light: #f8f9fa;
+            --text-dark: #333;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 0;
-            background-color: #f4f7f6;
-            display: flex;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
         }
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #2c3e50;
+
+        /* Navigation */
+        nav {
+            background-color: var(--primary-blue);
             color: white;
-            padding: 20px;
-            position: fixed;
-        }
-        .sidebar h2 {
-            color: #1abc9c;
-            border-bottom: 1px solid #34495e;
-            padding-bottom: 10px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar li {
-            padding: 15px 0;
-            border-bottom: 1px solid #34495e;
-            cursor: pointer;
-        }
-        .main-content {
-            margin-left: 290px;
-            padding: 40px;
-            width: 100%;
-        }
-        .header {
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        .balance-card {
-            background: linear-gradient(135deg, #1abc9c, #16a085);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
-        }
-        .balance-amount {
-            font-size: 3rem;
+
+        .logo {
+            font-size: 24px;
             font-weight: bold;
+            letter-spacing: 1px;
         }
-        .transactions {
-            margin-top: 30px;
+
+        .user-info {
+            font-size: 0.9rem;
+        }
+
+        /* Dashboard Layout */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .account-header {
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--accent-gold);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
+
+        .balance-title {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin: 10px 0;
+        }
+
+        /* Transactions Table */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #f1f1f1;
+            padding: 15px 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+
+        th {
+            background-color: #fafafa;
             text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+            padding: 15px;
+            font-size: 0.85rem;
+            color: #777;
+            border-bottom: 2px solid #eee;
         }
-        .status-completed {
-            color: #27ae60;
-            font-weight: bold;
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .amount-pos { color: var(--success); font-weight: bold; }
+        .amount-neg { color: var(--danger); font-weight: bold; }
+        
+        .iban-detail {
+            display: block;
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            background: #e9ecef;
+        }
+
+        .blocked-notice {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeeba;
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>Harmoniebanque</h2>
-    <ul>
-        <li>Dashboard</li>
-        <li>Accounts</li>
-        <li>Transfers</li>
-        <li>Payments</li>
-        <li>Settings</li>
-        <li>Logout</li>
-    </ul>
-</div>
+<nav>
+    <div class="logo">HARMONIIE</div>
+    <div class="user-info">
+        Bienvenue, <strong>MONIQUE SIRONVAL</strong> | Compte n° 129942
+    </div>
+</nav>
 
-<div class="main-content">
-    <div class="header">
-        <div>
-            <h1>Welcome back, harmonie</h1>
-            <p>Customer ID: HB-882910</p>
-        </div>
-        <div style="text-align: right;">
-            <p>Last Login: Today, 10:45 AM</p>
-        </div>
+<div class="container">
+    <div class="blocked-notice">
+        <strong>Avis important :</strong> Votre compte fait actuellement l'objet d'une demande fiscale et d'un blocage partiel depuis le 16/04/2026.
     </div>
 
-    <div class="balance-card">
-        <p>Total Available Balance</p>
-        <div class="balance-amount">100.00 EUR</div>
-        <p>Current Account: ****4492</p>
+    <div class="account-header">
+        <div class="balance-title">Solde Total Disponible</div>
+        <div class="balance-amount">319 765,48 €</div>
+        <div>Compte Courant Particulier - FR76 1747 ... 0081</div>
     </div>
 
-    <div class="transactions">
-        <h3>Recent Transactions</h3>
+    <div class="card">
+        <div class="card-header">Historique des Transactions</div>
         <table>
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Amount</th>
+                    <th>DATE</th>
+                    <th>DÉTAILS DE L'OPÉRATION</th>
+                    <th>STATUT</th>
+                    <th>MONTANT</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- June 2026 -->
                 <tr>
-                    <td>Oct 24, 2023</td>
-                    <td>Opening Deposit</td>
-                    <td class="status-completed">Completed</td>
-                    <td>+100.00 EUR</td>
+                    <td>05/06/2026</td>
+                    <td>Virement Reçu - BIL bank <span class="iban-detail">LU97 0024 1153 8560 0000 - LU734080000028857187</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+14 334,00 €</td>
+                </tr>
+                <!-- May 2026 -->
+                <tr>
+                    <td>05/05/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - FR7617478000010003600294227</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+11 127,00 €</td>
+                </tr>
+                <!-- April 2026 -->
+                <tr>
+                    <td>30/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - FR7617478000010003600294227</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+6 148,00 €</td>
                 </tr>
                 <tr>
-                    <td>Oct 23, 2023</td>
-                    <td>Account Verification</td>
-                    <td class="status-completed">Completed</td>
-                    <td>0.00 EUR</td>
+                    <td>24/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - LU734080000028857187</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+12 102,00 €</td>
+                </tr>
+                <tr>
+                    <td>20/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - LU734080000028857187</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+15 146,00 €</td>
+                </tr>
+                <tr>
+                    <td>18/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - LU734080000028857187</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+10 485,00 €</td>
+                </tr>
+                <tr style="background-color: #fff5f5;">
+                    <td>16/04/2026</td>
+                    <td><strong>Demande fiscale et blocage du compte</strong></td>
+                    <td><span class="status-badge" style="background: #f8d7da; color: #721c24;">En attente</span></td>
+                    <td class="amount-neg">-69 342,00 €</td>
+                </tr>
+                <tr>
+                    <td>14/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - FR761747800 0010 0038 3996 0081</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+7 097,00 €</td>
+                </tr>
+                <tr>
+                    <td>13/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - LU734080000028857187</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+8 729,00 €</td>
+                </tr>
+                <tr>
+                    <td>09/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - FR761747800 0010 0038 3996 0081</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+9 174,00 €</td>
+                </tr>
+                <tr>
+                    <td>07/04/2026</td>
+                    <td>Demande d'assurance</td>
+                    <td><span class="status-badge">Traité</span></td>
+                    <td class="amount-neg">-25 000,00 €</td>
+                </tr>
+                <tr>
+                    <td>03/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - FR761747800 0010 0038 3996 0081</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+8 516,00 €</td>
+                </tr>
+                <tr>
+                    <td>03/04/2026</td>
+                    <td>Virement Reçu - BNP bank <span class="iban-detail">BE47 0020 2179 8480 - LU734080000028857187</span></td>
+                    <td><span class="status-badge">Validé</span></td>
+                    <td class="amount-pos">+8 880,00 €</td>
+                </tr>
+                <!-- March 2026 -->
+                <tr>
+                    <td>24/03/2026</td>
+                    <td>Frais remboursables conversion crypto en euros</td>
+                    <td><span class="status-badge">Remboursé</span></td>
+                    <td class="amount-neg">-17 396,00 €</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    // Interaction basique pour simuler une session active
+    console.log("Session Harmoniie active pour : sironvalmonique@yahoo.fr");
+</script>
 
 </body>
 </html>
