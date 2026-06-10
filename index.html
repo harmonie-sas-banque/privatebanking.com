@@ -14,7 +14,7 @@
             --white: #ffffff;
         }
 
-        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #333; height: 100%; }
+        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #333; height: 100%; overflow-x: hidden; }
 
         /* --- NAVIGATION PUBLIQUE --- */
         #public-nav { background: var(--white); padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
@@ -34,24 +34,27 @@
         .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
         .btn-submit { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        /* --- DASHBOARD (STRUCTURE) --- */
-        #dashboard-container { display: none; height: 100vh; }
-        .sidebar { width: 280px; background: var(--primary); height: 100%; position: fixed; color: white; padding-top: 30px; }
+        /* --- STRUCTURE ESPACE CLIENT (DASHBOARD) --- */
+        #dashboard-container { display: none; height: 100vh; width: 100%; }
+        .sidebar { width: 280px; background: var(--primary); height: 100vh; position: fixed; color: white; padding-top: 30px; z-index: 10; }
         .sidebar-brand { padding: 0 30px 40px; font-size: 24px; font-weight: 800; letter-spacing: -1px; }
         .sidebar-item { padding: 15px 30px; cursor: pointer; transition: 0.3s; font-size: 15px; border-left: 4px solid transparent; display: flex; align-items: center; }
-        .sidebar-item:hover, .sidebar-item.active { background: rgba(255,255,255,0.1); border-left: 4px solid var(--accent); }
+        .sidebar-item:hover { background: rgba(255,255,255,0.1); }
+        .sidebar-item.active { background: rgba(255,255,255,0.15); border-left: 4px solid var(--accent); font-weight: bold; }
         
-        .main-view { margin-left: 280px; padding: 40px; min-height: 100vh; box-sizing: border-box; }
+        .main-view { margin-left: 280px; padding: 40px; min-height: 100vh; box-sizing: border-box; width: calc(100% - 280px); }
 
-        /* --- PAGES INTERNES --- */
-        .page-view { display: none; }
+        /* --- PAGES INTERNES (VUES SÉPARÉES) --- */
+        .page-view { display: none; width: 100%; animation: fadeIn 0.3s ease-in-out; }
         .page-view.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .card { background: var(--white); padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 30px; }
         .balance-val { font-size: 36px; font-weight: bold; color: var(--primary); margin: 10px 0; }
         
         /* --- TRANSACTIONS --- */
-        .table-wrapper { background: white; border-radius: 8px; overflow: hidden; }
+        .table-wrapper { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #eee; }
         table { width: 100%; border-collapse: collapse; }
         th { background: #f8f9fa; padding: 12px 15px; text-align: left; font-size: 11px; color: #777; text-transform: uppercase; border-bottom: 1px solid #eee; }
         td { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 13px; }
@@ -61,10 +64,11 @@
         .subtotal { background: #fdf9f2; font-weight: bold; }
 
         /* --- VIREMENT --- */
-        .error-banner { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; border: 1px solid #f5c6cb; margin-bottom: 25px; display: none; font-weight: bold; line-height: 1.4; }
+        .error-banner { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; border: 1px solid #f5c6cb; margin-bottom: 25px; display: none; font-weight: bold; line-height: 1.5; }
 
         /* --- CONTACT --- */
-        .contact-box { text-align: center; border: 2px dashed var(--accent); padding: 30px; border-radius: 12px; margin-top: 20px; }
+        .contact-card { text-align: center; border: 2px dashed var(--accent); padding: 40px; border-radius: 12px; background: #fffcf5; }
+        .contact-email { font-size: 22px; font-weight: bold; color: var(--primary); text-decoration: none; display: block; margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -80,7 +84,7 @@
     <div class="hero">
         <div>
             <h1>L'excellence bancaire au quotidien</h1>
-            <p>Gestion de patrimoine et solutions de financement sur mesure.</p><br>
+            <p>Gestion de patrimoine et solutions de financement sur mesure pour les particuliers.</p><br>
             <button class="btn-submit" style="width:250px;" onclick="showSection('login')">Accéder à mes comptes</button>
         </div>
     </div>
@@ -93,13 +97,13 @@
 <!-- SECTION LOGIN -->
 <section id="login-section">
     <div class="login-card">
-        <h2 style="color:var(--primary); margin-bottom:25px;">Authentification</h2>
+        <h2 style="color:var(--primary); margin-bottom:25px;">Identification Client</h2>
         <div class="form-group">
             <label>NUMÉRO DE COMPTE</label>
             <input type="text" id="user" placeholder="129942">
         </div>
         <div class="form-group">
-            <label>MOT DE PASSE (EMAIL)</label>
+            <label>MOT DE PASSE</label>
             <input type="password" id="pass" placeholder="••••••••">
         </div>
         <button class="btn-submit" onclick="attemptLogin()">SE CONNECTER</button>
@@ -108,27 +112,29 @@
 
 <!-- ESPACE CLIENT (DASHBOARD) -->
 <section id="dashboard-container">
+    <!-- MENU LATÉRAL FIXE -->
     <div class="sidebar">
         <div class="sidebar-brand">HARMONIIE</div>
-        <div class="sidebar-item active" id="nav-synth" onclick="switchPage('synth')">Synthèse des comptes</div>
-        <div class="sidebar-item" id="nav-vire" onclick="switchPage('vire')">Effectuer un virement</div>
-        <div class="sidebar-item" id="nav-cont" onclick="switchPage('cont')">Contactez-nous</div>
-        <div class="sidebar-item" onclick="location.reload()" style="margin-top: 60px; color: #adb5bd;">Déconnexion</div>
+        <div class="sidebar-item active" id="nav-synth" onclick="navigateTo('synth')">Synthèse des comptes</div>
+        <div class="sidebar-item" id="nav-vire" onclick="navigateTo('vire')">Effectuer un virement</div>
+        <div class="sidebar-item" id="nav-cont" onclick="navigateTo('cont')">Contactez-nous</div>
+        <div class="sidebar-item" onclick="location.reload()" style="margin-top: 60px; color: #adb5bd; border-top: 1px solid rgba(255,255,255,0.1);">Déconnexion</div>
     </div>
 
+    <!-- ZONE DE CONTENU VARIABLE -->
     <div class="main-view">
         
-        <!-- PAGE 1: SYNTHESE -->
+        <!-- PAGE : SYNTHÈSE (SÉPARÉE) -->
         <div id="page-synth" class="page-view active">
-            <h1 style="margin-top:0;">Bonjour, Mme MONIQUE SIRONVAL</h1>
+            <h1 style="margin-top:0;">Tableau de bord - Mme SIRONVAL</h1>
             <div class="card" style="border-left: 6px solid var(--accent);">
-                <span style="color:#888; font-size:12px; font-weight:bold;">SOLDE TOTAL DISPONIBLE</span>
+                <span style="color:#888; font-size:12px; font-weight:bold; text-transform:uppercase;">Solde Total Disponible</span>
                 <div class="balance-val">319 765,48 €</div>
-                <div style="color:var(--accent); font-weight:bold; font-size:14px;">Compte de Dépôt Particulier n° 129942</div>
+                <div style="color:var(--accent); font-weight:bold; font-size:14px;">Compte Courant Particulier n° 129942</div>
             </div>
 
             <div class="table-wrapper card" style="padding:0;">
-                <div style="padding:15px; font-weight:bold; border-bottom:1px solid #eee;">Historique des Opérations</div>
+                <div style="padding:15px; font-weight:bold; border-bottom:1px solid #eee; background:#fafafa;">Dernières Opérations</div>
                 <table>
                     <thead>
                         <tr><th>DATE</th><th>DESCRIPTION / RÉFÉRENCE</th><th>MONTANT</th></tr>
@@ -156,47 +162,55 @@
             </div>
         </div>
 
-        <!-- PAGE 2: VIREMENT -->
+        <!-- PAGE : VIREMENT (SÉPARÉE) -->
         <div id="page-vire" class="page-view">
-            <h1 style="margin-top:0;">Effectuer un virement</h1>
+            <h1 style="margin-top:0;">Nouveau Virement SEPA</h1>
             <div id="transfer-error" class="error-banner">
                 Marge de maintien insuffisante pour traiter l’opération.<br><br>
                 Veuillez approvisionner votre compte sur marge avec 95 929 EUR.
             </div>
             
-            <div class="card" style="max-width: 600px;">
+            <div class="card" style="max-width: 650px;">
                 <div class="form-group">
                     <label>COMPTE À DÉBITER</label>
-                    <input type="text" value="Compte Courant Particulier (*942) - 319 765,48 €" disabled style="background:#f9f9f9; font-weight:bold;">
+                    <input type="text" value="Compte Courant Particulier (*942) - 319 765,48 €" disabled style="background:#f9f9f9; font-weight:bold; color:var(--primary);">
                 </div>
                 <div class="form-group">
-                    <label>BÉNÉFICIAIRE (NOM COMPLET)</label>
-                    <input type="text" placeholder="Ex: Jean Dupont">
+                    <label>NOM DU BÉNÉFICIAIRE</label>
+                    <input type="text" id="bene-name" placeholder="Ex: Jean Dupont">
                 </div>
                 <div class="form-group">
                     <label>IBAN DU DESTINATAIRE</label>
-                    <input type="text" placeholder="FR76 0000 0000 0000 0000 0000 000">
+                    <input type="text" id="bene-iban" placeholder="FR76 0000 0000 0000 0000 0000 000">
                 </div>
                 <div class="form-group">
-                    <label>MONTANT DU TRANSFERT (€)</label>
-                    <input type="number" placeholder="0.00">
+                    <label>MONTANT (€)</label>
+                    <input type="number" id="bene-amt" placeholder="0.00">
                 </div>
-                <button class="btn-submit" style="background: var(--primary);" onclick="triggerTransferError()">VALIDER LE VIREMENT SEPA</button>
+                <div class="form-group">
+                    <label>MOTIF DE L'OPÉRATION (FACULTATIF)</label>
+                    <input type="text" placeholder="Ex: Paiement facture">
+                </div>
+                <button class="btn-submit" style="background: var(--primary); margin-top:10px;" onclick="triggerVirementError()">VALIDER LE TRANSFERT</button>
             </div>
         </div>
 
-        <!-- PAGE 3: CONTACT -->
+        <!-- PAGE : CONTACT (SÉPARÉE) -->
         <div id="page-cont" class="page-view">
-            <h1 style="margin-top:0;">Assistance Client</h1>
-            <div class="card" style="max-width: 600px;">
-                <p>Pour toute question concernant vos plafonds de virement ou la gestion de votre marge, veuillez contacter votre conseiller dédié :</p>
-                <div class="contact-box">
-                    <p style="margin-bottom:10px; font-weight:bold; color:#666;">SUPPORT PRIORITAIRE EMAIL</p>
-                    <a href="mailto:banking@harmoniesasgroup.com" style="font-size:20px; font-weight:bold; color:var(--primary); text-decoration:none;">banking@harmoniesasgroup.com</a>
+            <h1 style="margin-top:0;">Service Client & Support</h1>
+            <div class="card" style="max-width: 650px;">
+                <p>Pour toute assistance concernant vos comptes, vos plafonds ou vos investissements, contactez votre conseiller dédié :</p>
+                <div class="contact-card">
+                    <span style="font-size:12px; font-weight:bold; color:#888; letter-spacing:1px; text-transform:uppercase;">Support Prioritaire</span>
+                    <a href="mailto:banking@harmoniesasgroup.com" class="contact-email">banking@harmoniesasgroup.com</a>
+                    <p style="font-size:13px; color:#666;">
+                        Nos experts vous répondent du lundi au vendredi<br>de 9h00 à 18h00 sans interruption.
+                    </p>
                 </div>
-                <p style="font-size:13px; color:#888; margin-top:20px;">
-                    Nos services sont disponibles du lundi au vendredi de 9h00 à 18h00.
-                </p>
+                <div style="margin-top:30px; font-size:13px; color:#888;">
+                    <strong>Harmoniie Bank SAS</strong><br>
+                    Département Relations Clients - 1 Rue de la Bourse, Paris.
+                </div>
             </div>
         </div>
 
@@ -204,7 +218,7 @@
 </section>
 
 <script>
-    // Navigation globale
+    // --- LOGIQUE DE NAVIGATION GÉNÉRALE ---
     function showSection(id) {
         document.getElementById('home-section').style.display = 'none';
         document.getElementById('login-section').style.display = 'none';
@@ -220,36 +234,49 @@
         }
     }
 
-    // Authentification
+    // --- AUTHENTIFICATION ---
     function attemptLogin() {
         const u = document.getElementById('user').value;
         const p = document.getElementById('pass').value;
+        // Identifiants vérifiés
         if(u === "129942" && p === "sironvalmonique@yahoo.fr") {
             showSection('dash');
         } else {
-            alert("Identifiants incorrects. Veuillez réessayer.");
+            alert("Accès refusé. Veuillez vérifier vos identifiants de connexion.");
         }
     }
 
-    // Navigation interne Dashboard
-    function switchPage(pageId) {
-        // Masquer toutes les pages
-        document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-        // Désactiver tous les items sidebar
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        
-        // Activer la page et l'item
-        document.getElementById('page-' + pageId).classList.add('active');
-        document.getElementById('nav-' + pageId).classList.add('active');
-        
-        // Reset erreur virement si on change de page
+    // --- NAVIGATION INTERNE (SÉPARATION DES PAGES) ---
+    function navigateTo(pageKey) {
+        // 1. Désactiver toutes les vues
+        const views = document.querySelectorAll('.page-view');
+        views.forEach(v => v.classList.remove('active'));
+
+        // 2. Désactiver tous les boutons du menu
+        const menuItems = document.querySelectorAll('.sidebar-item');
+        menuItems.forEach(item => item.classList.remove('active'));
+
+        // 3. Activer la page demandée
+        const targetPage = document.getElementById('page-' + pageKey);
+        if(targetPage) {
+            targetPage.classList.add('active');
+        }
+
+        // 4. Activer le bouton de menu correspondant
+        const targetNav = document.getElementById('nav-' + pageKey);
+        if(targetNav) {
+            targetNav.classList.add('active');
+        }
+
+        // 5. Reset des messages d'erreur et retour en haut de page
         document.getElementById('transfer-error').style.display = 'none';
+        window.scrollTo(0, 0);
     }
 
-    // Fonction d'erreur virement
-    function triggerTransferError() {
-        const err = document.getElementById('transfer-error');
-        err.style.display = 'block';
+    // --- FONCTION VIREMENT ---
+    function triggerVirementError() {
+        const errorBanner = document.getElementById('transfer-error');
+        errorBanner.style.display = 'block';
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 </script>
